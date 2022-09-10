@@ -3,9 +3,11 @@
     // color-we-def : [rgb, color-partner-def-eng, color-partner-def-kor]
     // exception: 투명343, 투명무광331 제외
 
+
 const colors = {
 
-    black: ["rgb(36,32,33)", "흑색305", "black"],
+    black: ["#fff", "흑색305", "black"],
+    // black: ["rgb(36,32,33)", "흑색305", "black"],
     white: ["rgb(255,255,255)", "백색315", "whute"],
     red: ["rgb(237,29,37)", "적색320", "red"],
     silver: ["rgb(214,225,232)", "은색321", "silver"],
@@ -38,23 +40,41 @@ const colors = {
 
 };
 
+const colorPalette = document.querySelector(".color-options");
+const colorPicker = document.querySelector(".color-option");
+
+const displayColorPalette = function(colorData) {
+
+    colorPalette.innerHTML = '';
+
+    for(const color in colorData) {
+
+        // console.log(colors[color])
+        const html = `<div class="color-option" style="background-color: ${colors[color][0]}" data-color="${colors[color][0]}"></div>`;
+        colorPalette.insertAdjacentHTML('afterbegin', html);
+
+    }
+
+}
+
+displayColorPalette(colors);
+
 const ctx = document.getElementById('canvas').getContext('2d');
 
-const colorOptions = Array.from(document.getElementsByClassName("color-option"));
-
-
+const colorArr = Array.from(document.getElementsByClassName("color-option"));
 
 // default color
-let colorFoundation = 'black'; 
+let colorValue = 'black'; 
 let colorStripe = 'white';
 
 function onColorClick(e) {
-    console.log(e);
+    const colorValue = e.target.dataset.color;
+    draw(colorValue);
 }
 
-colorOptions.forEach(color => color.addEventListener("click", onColorClick));
+colorArr.forEach(color => color.addEventListener("click", onColorClick));
 
-function draw() {
+function draw(colorValue) {
     const ctx = document.getElementById('canvas').getContext('2d');
     
     // wood part
@@ -62,7 +82,7 @@ function draw() {
     ctx.fillRect(10, 300, 700, 15);
     
     // foundation part
-    ctx.fillStyle = colorFoundation;
+    ctx.fillStyle = colorValue;
     ctx.fillRect(50, 300, 100, 15);
     ctx.fillRect(570, 300, 100, 15);
 
@@ -78,23 +98,5 @@ function draw() {
 
     ctx.fillRect(360, 300, 10, 15);
 }
-
-
-// const selectFoundation = document.getElementById('custom-color-foundation');
-// const selectStripe = document.getElementById('custom-color-stripe');
-
-
-// selectFoundation.onchange = () => {
-//     console.log(selectFoundation.value);    
-//     colorFoundation = colors[selectFoundation.value][0];
-//     draw();
-// }
-
-// selectStripe.onchange = () => {
-//     console.log(selectStripe.value);    
-//     colorStripe = colors[selectStripe.value][0]
-//     draw();
-// }
-
 
 draw();
